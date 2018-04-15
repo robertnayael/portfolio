@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
 module.exports = {
@@ -11,47 +11,57 @@ module.exports = {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist')
     },
-    mode: 'development',
     module: {
-      rules: [
-        {
-            test: /\.scss$/,
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: [
-                    { loader: 'css-loader', options: { importLoaders: 1 } },
-                    { loader: 'postcss-loader' },
-                    'sass-loader'
-                ]
-            })
-        },
-        {
-            test: /\.css$/,
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: 'css-loader'
-            })
-        },
-        {
-            test: /\.(png|svg|jpg|gif)$/,
-            use: {
-                loader: 'file-loader',
-                options: {
-                    name: 'img/[name].[ext]',
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                        plugins: ['@babel/plugin-proposal-object-rest-spread']
+                    }
                 }
+            },
+            {
+                test: /\.scss$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        { loader: 'css-loader', options: { importLoaders: 1 } },
+                        { loader: 'postcss-loader' },
+                        'sass-loader'
+                    ]
+                })
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                })
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: 'img/[name].[ext]',
+                    }
+                }
+            },
+            {
+                test: /\.html$/,
+                use: [{
+                    loader: 'html-loader',
+                    options: {
+                        minimize: true,
+                        removeComments: true,
+                        collapseWhitespace: false
+                    }
+                }]
             }
-        },
-        {
-			test: /\.html$/,
-			use: [{
-                loader: 'html-loader',
-                options: {
-                    minimize: true,
-                    removeComments: true,
-                    collapseWhitespace: false
-                }
-            }]
-		}
       ]
     },
     plugins: [
