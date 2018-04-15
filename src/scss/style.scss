@@ -1,0 +1,17 @@
+html, body {
+    background-color: blue;
+}
+
+body {
+    background-image: url('../img/player_dead.png');
+}
+
+.block {
+    &__element {
+        color: yellow;
+    }
+}
+
+::placeholder {
+    color: gray;
+  }
